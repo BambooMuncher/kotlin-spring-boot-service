@@ -146,6 +146,24 @@ class PizzaToppingServiceTest {
         assert(peopleCount == 2L)
     }
 
+    @Test
+    fun `resubmission for an existing person with new favorite replaces their favorite choice`() {
+        // given
+
+        // when
+        pizzaToppingService.submitToppings(testEmail, listOf(), sausage)
+        pizzaToppingService.submitToppings(testEmail, listOf(), null)
+
+        // then
+        val results = pizzaToppingService.retrieveSubmissionCountsByTopping()
+        val peopleCount = pizzaToppingService.retrievePeopleCount()
+        verifyPerson(email = testEmail, expectedSubmittedToppings = listOf())
+        verifyTopping(name = sausage, expectedPeopleSubmittedBy = listOf(), result = results[sausage])
+
+        assert(results.size == 1)
+        assert(peopleCount == 1L)
+    }
+
     private fun verifyPerson(email: String, expectedSubmittedToppings: List<String>, expectedFavoriteTopping: String? = null) {
         val person = personRepository.findPeopleByEmail(email).firstOrNull()
         assert(person != null)
@@ -183,6 +201,6 @@ class PizzaToppingServiceTest {
         // holding off result assertions until afterwards to first verify the data is populated expected
         assert(result != null)
         assert(result!!.totalSubmissions == expectedPeopleSubmittedBy.size.toLong())
-        assert(result!!.totalTimesFavorited == expectedPeopleFavoritedBy.size.toLong())
+        assert(result.totalTimesFavorited == expectedPeopleFavoritedBy.size.toLong())
     }
 }

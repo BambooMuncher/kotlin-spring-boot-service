@@ -25,6 +25,7 @@ class PizzaToppingService(
         }
         else {
             person.submittedToppings = mutableListOf()
+            person.favoriteTopping = null
         }
 
         var favoriteToppingEntity: ToppingEntity? = null
