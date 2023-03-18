@@ -3,7 +3,7 @@ package com.example.pizzatopping.models.requests
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Size
 
-data class SubmitPizzaToppingsRequest (
+data class SubmitPizzaToppingsRequest(
     @field:Email(regexp = ".+[@].+[\\.].+")
     @field:Size(min = 1, max = 100)
     val emailAddress: String,

@@ -2,7 +2,7 @@ package com.example.pizzatopping.models.database
 
 import jakarta.persistence.*
 
-@Entity(name="toppings")
+@Entity(name = "toppings")
 class ToppingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

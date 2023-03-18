@@ -2,8 +2,7 @@ package com.example.pizzatopping.models.database
 
 import jakarta.persistence.*
 
-
-@Entity(name="people")
+@Entity(name = "people")
 class PersonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +16,11 @@ class PersonEntity {
         joinColumns = [JoinColumn(name = "person_id")],
         inverseJoinColumns = [JoinColumn(name = "topping_id")]
     )
-   lateinit var submittedToppings: MutableList<ToppingEntity>
+    lateinit var submittedToppings: MutableList<ToppingEntity>
 
     @JoinColumn(name = "favorite_topping")
     @ManyToOne(cascade = [CascadeType.ALL])
     var favoriteTopping: ToppingEntity? = null
-
 
     companion object {
         fun from(email: String): PersonEntity {
@@ -32,5 +30,4 @@ class PersonEntity {
             return person
         }
     }
-
 }

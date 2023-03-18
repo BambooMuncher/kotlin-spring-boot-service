@@ -8,7 +8,6 @@ import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
-
 /**
  * These are tests which ensure the PizzaToppingService is able to function as expected when integrating the database.
  * Mocking the database interactions would massively limit the value of the tests, since the primary function of the
@@ -170,14 +169,13 @@ class PizzaToppingServiceTest {
         assert(person!!.email == email)
 
         assert(person.submittedToppings.size == expectedSubmittedToppings.size)
-        expectedSubmittedToppings.forEach{ expectedToppingName ->
-            assert(person.submittedToppings.firstOrNull{ it.name == expectedToppingName } != null)
+        expectedSubmittedToppings.forEach { expectedToppingName ->
+            assert(person.submittedToppings.firstOrNull { it.name == expectedToppingName } != null)
         }
 
-        if(expectedFavoriteTopping == null) {
+        if (expectedFavoriteTopping == null) {
             assert(person.favoriteTopping == null)
-        }
-        else {
+        } else {
             assert(person.favoriteTopping != null)
             assert(person.favoriteTopping!!.name == expectedFavoriteTopping)
         }
@@ -189,13 +187,13 @@ class PizzaToppingServiceTest {
         assert(topping!!.name == name)
 
         assert(topping.peopleSubmittedBy.size == expectedPeopleSubmittedBy.size)
-        expectedPeopleSubmittedBy.forEach{ expectedEmail ->
-            assert(topping.peopleSubmittedBy.firstOrNull{ it.email == expectedEmail } != null)
+        expectedPeopleSubmittedBy.forEach { expectedEmail ->
+            assert(topping.peopleSubmittedBy.firstOrNull { it.email == expectedEmail } != null)
         }
 
         assert(topping.peopleFavoritedBy.size == expectedPeopleFavoritedBy!!.size)
-        expectedPeopleFavoritedBy.forEach{ expectedEmail ->
-            assert(topping.peopleFavoritedBy.firstOrNull{ it.email == expectedEmail } != null)
+        expectedPeopleFavoritedBy.forEach { expectedEmail ->
+            assert(topping.peopleFavoritedBy.firstOrNull { it.email == expectedEmail } != null)
         }
 
         // holding off result assertions until afterwards to first verify the data is populated expected

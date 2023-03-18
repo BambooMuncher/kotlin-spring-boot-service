@@ -4,9 +4,7 @@ import com.example.pizzatopping.models.requests.SubmitPizzaToppingsRequest
 import com.example.pizzatopping.models.responses.GetPizzaToppingResultsResponse
 import com.example.pizzatopping.services.PizzaToppingService
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import io.swagger.v3.oas.annotations.responses.ApiResponses
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("api/v1/pizzas/toppings")
 @Validated
-class PizzaToppingController (private val pizzaToppingService: PizzaToppingService){
+class PizzaToppingController(private val pizzaToppingService: PizzaToppingService) {
 
     @Operation(
         summary = "Submit pizza toppings",
@@ -29,7 +27,6 @@ class PizzaToppingController (private val pizzaToppingService: PizzaToppingServi
         @RequestBody
         request: SubmitPizzaToppingsRequest
     ): ResponseEntity<String> {
-
         pizzaToppingService.submitToppings(
             rawEmail = request.emailAddress,
             toppings = request.toppings,
@@ -40,13 +37,10 @@ class PizzaToppingController (private val pizzaToppingService: PizzaToppingServi
         return ResponseEntity.noContent().build()
     }
 
-
-
     @Operation(summary = "Get report of pizza topping submission results", description = "Provides total times submitted and favorited per topping.")
     @ApiResponse(responseCode = "200", description = "Successfully submitted toppings")
     @GetMapping("/results")
     fun getPizzaToppingResults(): GetPizzaToppingResultsResponse {
-
         val submissionCountsByTopping = pizzaToppingService.retrieveSubmissionCountsByTopping()
         val peopleCount = pizzaToppingService.retrievePeopleCount()
         val totalToppings = submissionCountsByTopping.size.toLong()

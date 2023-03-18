@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-
 @WebMvcTest
 class PizzaToppingControllerTest {
 
@@ -32,7 +31,8 @@ class PizzaToppingControllerTest {
             .perform(
                 put("/api/v1/pizzas/toppings")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                    .content(objectMapper.writeValueAsString(request))
+            )
             .andExpect(status().isBadRequest)
     }
 
@@ -44,7 +44,8 @@ class PizzaToppingControllerTest {
             .perform(
                 put("/api/v1/pizzas/toppings")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                    .content(objectMapper.writeValueAsString(request))
+            )
             .andExpect(status().isBadRequest)
     }
 
@@ -56,7 +57,8 @@ class PizzaToppingControllerTest {
             .perform(
                 put("/api/v1/pizzas/toppings")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                    .content(objectMapper.writeValueAsString(request))
+            )
             .andExpect(status().isBadRequest)
     }
 
@@ -68,7 +70,8 @@ class PizzaToppingControllerTest {
             .perform(
                 put("/api/v1/pizzas/toppings")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request)))
+                    .content(objectMapper.writeValueAsString(request))
+            )
             .andExpect(status().isNoContent)
     }
 }

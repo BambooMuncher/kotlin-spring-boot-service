@@ -20,10 +20,9 @@ class PizzaToppingService(
 
         var person = personRepository.findPeopleByEmail(email).firstOrNull()
 
-        if(person == null) {
+        if (person == null) {
             person = PersonEntity.from(email = email)
-        }
-        else {
+        } else {
             person.submittedToppings = mutableListOf()
             person.favoriteTopping = null
         }
@@ -32,7 +31,7 @@ class PizzaToppingService(
 
         toppings.forEach {
             val topping = submitTopping(rawToppingName = it, person = person)
-            if(it == favoriteTopping) {
+            if (it == favoriteTopping) {
                 favoriteToppingEntity = topping
             }
         }
@@ -41,7 +40,7 @@ class PizzaToppingService(
          * We only need to submit the topping here if we have a favorite which wasn't included in the toppings list.
          * This lets us support submitting the favorite topping as a topping regardless of whether it's in the list.
          */
-        if(favoriteTopping != null && favoriteToppingEntity == null) {
+        if (favoriteTopping != null && favoriteToppingEntity == null) {
             favoriteToppingEntity = submitTopping(rawToppingName = favoriteTopping, person = person)
         }
 
@@ -53,7 +52,7 @@ class PizzaToppingService(
         // simple way to prevent duplicates due to casing and sanitize data
         val toppingName = rawToppingName.lowercase()
         var topping = toppingsRepository.findToppingsByName(toppingName).firstOrNull()
-        if(topping == null) {
+        if (topping == null) {
             topping = ToppingEntity.from(name = toppingName)
             toppingsRepository.save(topping)
         }

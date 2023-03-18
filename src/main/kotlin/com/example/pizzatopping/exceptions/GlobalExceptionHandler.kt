@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
-
 @ControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
@@ -23,10 +22,10 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
 
         val errors: List<String?> = ex.bindingResult
             .fieldErrors
-            .map{ "${it.field}: ${it.defaultMessage}" }
+            .map { "${it.field}: ${it.defaultMessage}" }
             .toList()
 
-        body["errors"] =  errors
+        body["errors"] = errors
 
         return ResponseEntity(body, HttpStatus.BAD_REQUEST)
     }
