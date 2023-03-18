@@ -17,7 +17,7 @@ class PizzaToppingController(private val pizzaToppingService: PizzaToppingServic
 
     @Operation(
         summary = "Submit pizza toppings",
-        description = "Re-submitting toppings for the same email replaces the toppings submitted. Also allows for submitting favorite topping."
+        description = "Re-submitting toppings for the same email replaces the toppings submitted. Also allows for submitting favorite topping. A valid email format will be required for the `emailAddress` field."
     )
     @ApiResponse(responseCode = "204", description = "Successfully submitted toppings")
     @ApiResponse(responseCode = "400", description = "Invalid input")
