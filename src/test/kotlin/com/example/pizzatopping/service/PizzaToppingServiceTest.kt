@@ -57,8 +57,8 @@ class PizzaToppingServiceTest {
         val peopleCount = pizzaToppingService.retrievePeopleCount()
         verifyPerson(email = testEmail, expectedSubmittedToppings = listOf(mushrooms, pepperoni))
         verifyTopping(name = mushrooms, expectedPeopleSubmittedBy = listOf(testEmail), result = results[mushrooms])
-
         verifyTopping(name = pepperoni, expectedPeopleSubmittedBy = listOf(testEmail), result = results[pepperoni])
+        verifyResults(results = results)
 
         assert(results.size == 2)
         assert(peopleCount == 1L)
@@ -78,6 +78,7 @@ class PizzaToppingServiceTest {
         verifyPerson(email = testEmail, expectedSubmittedToppings = listOf())
         verifyTopping(name = mushrooms, expectedPeopleSubmittedBy = listOf(), result = results[mushrooms])
         verifyTopping(name = pepperoni, expectedPeopleSubmittedBy = listOf(), result = results[pepperoni])
+        verifyResults(results = results)
 
         assert(results.size == 2)
         assert(peopleCount == 1L)
@@ -99,6 +100,7 @@ class PizzaToppingServiceTest {
         verifyTopping(name = mushrooms, expectedPeopleSubmittedBy = listOf(testEmail, testEmail2), result = results[mushrooms])
         verifyTopping(name = pepperoni, expectedPeopleSubmittedBy = listOf(testEmail), result = results[pepperoni])
         verifyTopping(name = sausage, expectedPeopleSubmittedBy = listOf(testEmail2), result = results[sausage])
+        verifyResults(results = results)
 
         assert(results.size == 3)
         assert(peopleCount == 2L)
@@ -118,6 +120,7 @@ class PizzaToppingServiceTest {
         val peopleCount = pizzaToppingService.retrievePeopleCount()
         verifyPerson(email = testEmail, expectedSubmittedToppings = listOf(sausage), expectedFavoriteTopping = sausage)
         verifyTopping(name = sausage, expectedPeopleSubmittedBy = listOf(testEmail), expectedPeopleFavoritedBy = listOf(testEmail), result = results[sausage])
+        verifyResults(results = results)
 
         assert(results.size == 1)
         assert(peopleCount == 1L)
@@ -140,6 +143,7 @@ class PizzaToppingServiceTest {
         verifyTopping(name = sausage, expectedPeopleSubmittedBy = listOf(testEmail, testEmail2), expectedPeopleFavoritedBy = listOf(testEmail, testEmail2), result = results[sausage])
         verifyTopping(name = mushrooms, expectedPeopleSubmittedBy = listOf(testEmail), result = results[mushrooms])
         verifyTopping(name = pepperoni, expectedPeopleSubmittedBy = listOf(testEmail2), result = results[pepperoni])
+        verifyResults(results = results)
 
         assert(results.size == 3)
         assert(peopleCount == 2L)
@@ -158,6 +162,7 @@ class PizzaToppingServiceTest {
         val peopleCount = pizzaToppingService.retrievePeopleCount()
         verifyPerson(email = testEmail, expectedSubmittedToppings = listOf())
         verifyTopping(name = sausage, expectedPeopleSubmittedBy = listOf(), result = results[sausage])
+        verifyResults(results = results)
 
         assert(results.size == 1)
         assert(peopleCount == 1L)
@@ -166,39 +171,58 @@ class PizzaToppingServiceTest {
     private fun verifyPerson(email: String, expectedSubmittedToppings: List<String>, expectedFavoriteTopping: String? = null) {
         val person = personRepository.findPeopleByEmail(email).firstOrNull()
         assert(person != null)
-        assert(person!!.email == email)
 
-        assert(person.submittedToppings.size == expectedSubmittedToppings.size)
-        expectedSubmittedToppings.forEach { expectedToppingName ->
-            assert(person.submittedToppings.firstOrNull { it.name == expectedToppingName } != null)
-        }
+        person?.let {
+            assert(it.email == email)
+            assert(it.submittedToppings.size == expectedSubmittedToppings.size)
+            expectedSubmittedToppings.forEach { expectedToppingName ->
+                assert(it.submittedToppings.firstOrNull { it.name == expectedToppingName } != null)
+            }
 
-        if (expectedFavoriteTopping == null) {
-            assert(person.favoriteTopping == null)
-        } else {
-            assert(person.favoriteTopping != null)
-            assert(person.favoriteTopping!!.name == expectedFavoriteTopping)
+            if (expectedFavoriteTopping == null) {
+                assert(it.favoriteTopping == null)
+            } else {
+                assert(it.favoriteTopping != null)
+                assert(it.favoriteTopping!!.name == expectedFavoriteTopping)
+            }
         }
     }
 
     private fun verifyTopping(name: String, expectedPeopleSubmittedBy: List<String>, expectedPeopleFavoritedBy: List<String>? = listOf(), result: ToppingResult?) {
         val topping = toppingsRepository.findToppingsByName(name).firstOrNull()
         assert(topping != null)
-        assert(topping!!.name == name)
 
-        assert(topping.peopleSubmittedBy.size == expectedPeopleSubmittedBy.size)
-        expectedPeopleSubmittedBy.forEach { expectedEmail ->
-            assert(topping.peopleSubmittedBy.firstOrNull { it.email == expectedEmail } != null)
-        }
+        topping?.let {
+            assert(it.name == name)
 
-        assert(topping.peopleFavoritedBy.size == expectedPeopleFavoritedBy!!.size)
-        expectedPeopleFavoritedBy.forEach { expectedEmail ->
-            assert(topping.peopleFavoritedBy.firstOrNull { it.email == expectedEmail } != null)
+            assert(it.peopleSubmittedBy.size == expectedPeopleSubmittedBy.size)
+            expectedPeopleSubmittedBy.forEach { expectedEmail ->
+                assert(it.peopleSubmittedBy.firstOrNull { it.email == expectedEmail } != null)
+            }
+
+            assert(it.peopleFavoritedBy.size == expectedPeopleFavoritedBy!!.size)
+            expectedPeopleFavoritedBy.forEach { expectedEmail ->
+                assert(it.peopleFavoritedBy.firstOrNull { it.email == expectedEmail } != null)
+            }
         }
 
         // holding off result assertions until afterwards to first verify the data is populated expected
         assert(result != null)
-        assert(result!!.totalTimesSubmitted == expectedPeopleSubmittedBy.size.toLong())
-        assert(result.totalTimesFavorited == expectedPeopleFavoritedBy.size.toLong())
+
+        result?.let {
+            assert(it.totalTimesSubmitted == expectedPeopleSubmittedBy.size.toLong())
+            assert(it.totalTimesFavorited == expectedPeopleFavoritedBy!!.size.toLong())
+        }
+    }
+
+    private fun verifyResults(results: Map<String, ToppingResult>) {
+        var previous: ToppingResult? = null
+        results.forEach { current ->
+            previous?.let { previous ->
+                assert(previous >= current.value)
+            } ?: run {
+                previous = current.value
+            }
+        }
     }
 }

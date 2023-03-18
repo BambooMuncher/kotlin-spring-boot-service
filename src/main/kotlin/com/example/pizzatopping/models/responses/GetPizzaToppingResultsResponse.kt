@@ -10,13 +10,13 @@ data class GetPizzaToppingResultsResponse(
                 "totalTimesSubmitted": 20391,
                 "totalTimesFavorited": 4239
             },
-            "sausage": {
-                "totalTimesSubmitted": 6,
-                "totalTimesFavorited": 2
-            },
             "jalapeno": {
                 "totalTimesSubmitted": 451,
                 "totalTimesFavorited": 52
+            },
+            "sausage": {
+                "totalTimesSubmitted": 6,
+                "totalTimesFavorited": 2
             },
             "pepperoni": {
                 "totalTimesSubmitted": 2,

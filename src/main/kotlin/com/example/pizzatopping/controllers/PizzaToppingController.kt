@@ -37,7 +37,7 @@ class PizzaToppingController(private val pizzaToppingService: PizzaToppingServic
         return ResponseEntity.noContent().build()
     }
 
-    @Operation(summary = "Get report of pizza topping submission results", description = "Provides total times submitted and favorited per topping.")
+    @Operation(summary = "Get report of pizza topping submission results", description = "Provides total times submitted and favorited per topping. Results will be sorted by total time submitted then total times favorited descending.")
     @ApiResponse(responseCode = "200", description = "Successfully submitted toppings")
     @GetMapping("/results")
     fun getPizzaToppingResults(): GetPizzaToppingResultsResponse {

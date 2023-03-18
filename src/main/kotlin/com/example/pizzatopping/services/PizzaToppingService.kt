@@ -68,9 +68,13 @@ class PizzaToppingService(
     @Transactional
     fun retrieveSubmissionCountsByTopping(): Map<String, ToppingResult> {
         val toppings = toppingsRepository.findAll()
-        return toppings.associate {
+
+        // sorting could be done at the database level if we reach the scale to justify it
+        return toppings.map {
             it.name to ToppingResult(it.peopleSubmittedBy.size.toLong(), it.peopleFavoritedBy.size.toLong())
         }
+            .sortedByDescending { (_, value) -> value }
+            .toMap()
     }
 
     fun retrievePeopleCount(): Long {
