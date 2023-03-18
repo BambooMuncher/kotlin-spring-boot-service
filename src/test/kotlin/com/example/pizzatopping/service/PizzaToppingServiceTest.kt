@@ -198,7 +198,7 @@ class PizzaToppingServiceTest {
 
         // holding off result assertions until afterwards to first verify the data is populated expected
         assert(result != null)
-        assert(result!!.totalSubmissions == expectedPeopleSubmittedBy.size.toLong())
+        assert(result!!.totalTimesSubmitted == expectedPeopleSubmittedBy.size.toLong())
         assert(result.totalTimesFavorited == expectedPeopleFavoritedBy.size.toLong())
     }
 }

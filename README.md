@@ -1,5 +1,17 @@
 # Pizza Topping Service
 
+## Running the Service
+
+Simply select the application runner and press run if you're using IntelliJ. The source and target java versions are 17. Alternatively, the service can be run from the command line with `./gradlew bootRun`.
+
+I chose to use an embedded in-memory database for ease of running the service. The data will be persisted across runs through file storage.
+
+## Using the Service
+
+While the service is running, you can view the contents of the database if you would like by accessing http://localhost:8080/h2-console in your browser. The username will be `sa`. The password will be `password` (only the best security!). The url will be `jdbc:h2:file:/data/demo`.
+
+The API documentation is available through swagger at http://localhost:8080/swagger-ui/index.html. The page can also be used to interact with the API.
+
 ## Coding Challenge Questions
 
 ### If you had to build an app from scratch, what would be your ideal tech stack?
@@ -17,15 +29,3 @@ The constant flow of information and change from all sides in the software engin
 Perhaps one of the most important components of a back end engineer is a collaborative spirit: the humble nature to know there is much to learn and the willingness to offer knowledge and assistance when called for; understanding that no one person holds all the knowledge, skills, and qualities required to build the best possible software system; the conviction that with enough voices harmonizing you can almost hear a software system sing. Forgive the colorful language, but these are beliefs I hold. Why do these beliefs make me a great engineer? We often lament knowledge silos, but we can avoid and reduce them with a collaborative spirit of learning. We tire of cycles of blame which run us in circles, but collaboration gives us a path forward. We despise our dependencies and the pain they bring us, but with a collaborative spirit, we see how our dependencies are empowering us and seek to form effective partnerships. Day to day, this shows itself through me being a team player, gathering input from others, and sharing my own input where it might be helpful.
 
 These three qualities make me a great back engineer: a love of quality, a thirst for knowledge, and a spirit of collaboration.
-
-## Running the Service
-
-Simply press run if you're using an IDE. The source and target java versions are 17. Alternatively, the service can be run from the command line using `./gradlew bootRun`.
-
-I chose to use an embedded in-memory database for ease of running the service. The data will be persisted across runs through file storage.
-
-## Using the Service
-
-While the service is running, you can view the contents of the database if you would like by accessing http://localhost:8080/h2-console in your browser. The username will be `sa`. The password will be `password` (only the best security!). The url will be `jdbc:h2:file:/data/demo`.
-
-Swagger API docs are available at http://localhost:8080/swagger-ui/index.html while the service is running. The page can also be used to interact with the API.

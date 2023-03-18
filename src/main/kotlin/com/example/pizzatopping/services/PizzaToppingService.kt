@@ -13,10 +13,13 @@ class PizzaToppingService(
     private val personRepository: PersonRepository,
     private val toppingsRepository: ToppingsRepository
 ) {
+    companion object {
+        private val MAX_TOPPING_NAME_SIZE = 100
+    }
 
     @Transactional
     fun submitToppings(rawEmail: String, toppings: List<String>, favoriteTopping: String?) {
-        val email = rawEmail.lowercase()
+        val email = rawEmail.trim().lowercase()
 
         var person = personRepository.findPeopleByEmail(email).firstOrNull()
 
@@ -49,8 +52,8 @@ class PizzaToppingService(
     }
 
     private fun submitTopping(rawToppingName: String, person: PersonEntity): ToppingEntity {
-        // simple way to prevent duplicates due to casing and sanitize data
-        val toppingName = rawToppingName.lowercase()
+        // simple way to prevent duplicates due to casing, keep names to a reasonable size, and sanitize data
+        val toppingName = rawToppingName.take(MAX_TOPPING_NAME_SIZE).trim().lowercase()
         var topping = toppingsRepository.findToppingsByName(toppingName).firstOrNull()
         if (topping == null) {
             topping = ToppingEntity.from(name = toppingName)

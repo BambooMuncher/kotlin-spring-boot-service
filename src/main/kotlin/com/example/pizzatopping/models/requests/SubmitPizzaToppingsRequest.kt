@@ -1,11 +1,13 @@
 package com.example.pizzatopping.models.requests
 
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.Size
 
 data class SubmitPizzaToppingsRequest(
     @field:Email(regexp = ".+[@].+[\\.].+")
     @field:Size(min = 1, max = 100)
+    @field:Schema(example = "test@example.com")
     val emailAddress: String,
 
     /*
@@ -16,6 +18,14 @@ data class SubmitPizzaToppingsRequest(
      * We are currently not validating the size of the strings within topping list. This could be added if needed.
      */
     @field:Size(min = 0, max = 100)
+    @field:Schema(
+        example =
+        """[ 
+            "pepperoni",  
+            "corn", 
+            "sausage" 
+        ]"""
+    )
     val toppings: List<String>,
 
     /*
@@ -24,5 +34,6 @@ data class SubmitPizzaToppingsRequest(
      * will include the favorite topping as part of the topping submission.
      */
     @field:Size(min = 1, max = 100)
+    @field:Schema(example = "pineapple")
     val favoriteTopping: String?
 )
