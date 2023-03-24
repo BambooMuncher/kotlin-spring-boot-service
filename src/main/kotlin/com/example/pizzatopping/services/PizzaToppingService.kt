@@ -1,6 +1,7 @@
 package com.example.pizzatopping.services
 
 import com.example.pizzatopping.database.PersonRepository
+import com.example.pizzatopping.database.ToppingsCrudRepository
 import com.example.pizzatopping.database.ToppingsRepository
 import com.example.pizzatopping.models.database.PersonEntity
 import com.example.pizzatopping.models.database.ToppingEntity
@@ -8,13 +9,15 @@ import com.example.pizzatopping.models.responses.ToppingResult
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
+
 @Service
 class PizzaToppingService(
     private val personRepository: PersonRepository,
+    private val toppingsCrudRepository: ToppingsCrudRepository,
     private val toppingsRepository: ToppingsRepository
 ) {
     companion object {
-        private val MAX_TOPPING_NAME_SIZE = 100
+        private const val MAX_TOPPING_NAME_SIZE = 100
     }
 
     @Transactional
@@ -26,7 +29,7 @@ class PizzaToppingService(
         if (person == null) {
             person = PersonEntity.from(email = email)
         } else {
-            person.submittedToppings = mutableListOf()
+            person.submittedToppings = mutableSetOf()
             person.favoriteTopping = null
         }
 
@@ -54,10 +57,10 @@ class PizzaToppingService(
     private fun submitTopping(rawToppingName: String, person: PersonEntity): ToppingEntity {
         // simple way to prevent duplicates due to casing, keep names to a reasonable size, and sanitize data
         val toppingName = rawToppingName.take(MAX_TOPPING_NAME_SIZE).trim().lowercase()
-        var topping = toppingsRepository.findToppingsByName(toppingName).firstOrNull()
+        var topping = toppingsCrudRepository.findToppingsByName(toppingName).firstOrNull()
         if (topping == null) {
             topping = ToppingEntity.from(name = toppingName)
-            toppingsRepository.save(topping)
+            toppingsCrudRepository.save(topping)
         }
 
         person.submittedToppings.add(topping)
@@ -67,14 +70,11 @@ class PizzaToppingService(
 
     @Transactional
     fun retrieveSubmissionCountsByTopping(): Map<String, ToppingResult> {
-        val toppings = toppingsRepository.findAll()
+        val toppings = toppingsRepository.retrieveSortedToppings()
 
-        // sorting could be done at the database level if we reach the scale to justify it
-        return toppings.map {
+        return toppings.associate {
             it.name to ToppingResult(it.peopleSubmittedBy.size.toLong(), it.peopleFavoritedBy.size.toLong())
         }
-            .sortedByDescending { (_, value) -> value }
-            .toMap()
     }
 
     fun retrievePeopleCount(): Long {
