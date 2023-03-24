@@ -9,7 +9,6 @@ import com.example.pizzatopping.models.responses.ToppingResult
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
-
 @Service
 class PizzaToppingService(
     private val personRepository: PersonRepository,
