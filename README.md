@@ -1,4 +1,4 @@
-# Pizza Topping Service
+# Kotlin Spring Boot Example Service
 
 ## Running the Service
 
