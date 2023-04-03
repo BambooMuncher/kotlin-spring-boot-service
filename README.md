@@ -12,7 +12,7 @@ While the service is running, you can view the contents of the database if you w
 
 The API documentation is available through swagger at http://localhost:8080/swagger-ui/index.html. The page can also be used to interact with the API.
 
-## Coding Challenge Questions
+## Questions
 
 ### If you had to build an app from scratch, what would be your ideal tech stack?
 
