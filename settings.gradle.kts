@@ -1,1 +1,1 @@
-rootProject.name = "pizza-topping"
+rootProject.name = "imdb-lite"
